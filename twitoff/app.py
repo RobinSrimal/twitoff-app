@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 from .models import DB, User
 from .predict import predict_user
 from .twitter import add_or_update_user, update_all_users
-from os import getenv
+from decouple import config
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,9 +11,9 @@ load_dotenv()
 def create_app():
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL')
+    app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    #app.config['ENV'] = getenv('FLASK_ENV')
+    app.config['ENV'] = config('FLASK_ENV')
     DB.init_app(app)
 
     @app.route('/')
